@@ -115,8 +115,9 @@ const styles = StyleSheet.create({
 
   },
   camera:{
-    flex: 5,
-    width:"100%"
+    flex: 0,
+    width:"100%",
+    opacity:0
   },
   // container: {
   //   flex: 1,
