@@ -12,12 +12,13 @@ import {SocketContext, socket} from './context/socket';
 export default function App() {
   //state in the narrative
   const [trash_talk_state, setTrashTalkState] = useState(0);
+  const [selectedCodec,setSelectedCodec] = useState(""); 
 
  // to go to the next step ...
-  const setNextTrashTalkState = (value) =>{
-    setTrashTalkState(value);
+  // const setNextTrashTalkState = (value) =>{
+  //   setTrashTalkState(value);
 
-  }
+  // }
 
 
   return (

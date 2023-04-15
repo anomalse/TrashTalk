@@ -57,9 +57,16 @@ const RecordComp = (props) => {
          console.log("start record")
       
             // console.log( theRef)
+
+            const codecs = await Camera.getAvailableVideoCodecsAsync();
+          //setAvilableCodecs(codecs);
+          console.log({ codecs });
          
-        const { uri, codec = "mp4" }  = await theRef.recordAsync();
-           const type = `video/${codec}`;
+         // "mp4"
+       
+        const { uri} = await theRef.recordAsync( {codec: Camera.Constants.VideoCodec.H264});
+       
+          // const type = `video/${codec}`;
            console.log("returned here");
            console.log(uri);
            if (uri) {
@@ -82,7 +89,9 @@ const RecordComp = (props) => {
           else{
             console.log("file exists")
             try {
-                const response = await FileSystem.uploadAsync(`http://10.115.137.175:5000/binary-upload`, fileURI, {
+              //http://cslab-mbp-two.local:5000
+              //http://10.115.137.175:5000/binary-upload
+                const response = await FileSystem.uploadAsync(`http://cslab-mbp-two.local:5000/binary-upload`, fileURI, {
                   fieldName: 'file',
                   httpMethod: 'PATCH',
                   uploadType: FileSystem.FileSystemUploadType.BINARY_CONTENT,

@@ -1,10 +1,11 @@
 //serial
 const {SerialPort,ReadlineParser} = require('serialport');
 const Readline = require('@serialport/parser-readline');
-const path =  '/dev/cu.usbmodem14201';
+const path =  '/dev/cu.usbmodem14101';
 const baudRate = 9600;
 const port = new SerialPort({ path, baudRate })
-let prev_s = "";
+//let prev_s = "";
+let notIn=true;
 
 //socket server
 const PORT = 5000;
@@ -32,8 +33,8 @@ app.get('/', (req, res) => {
 app.patch('/binary-upload', (req, res) => {
   console.log('got an upload')
     console.log(req)
-  let s = req.pipe(fs.createWriteStream('./uploads/video/' + Date.now()+".mov"));
-  s.on('finish', function () { console.log("done"); res.send({ status: 'uploaded' });});
+  let s = req.pipe(fs.createWriteStream('./uploads/video/' + Date.now()+".mp4"));
+  s.on('finish', function () { notIn =true; console.log("done"); res.send({ status: 'uploaded' });});
  
  
 });
@@ -43,30 +44,32 @@ httpServer.listen(PORT, function () {
   console.log('listening on port:: ' + PORT);
 })
 
+
+
 //socket connection
 io.on('connect', (socket) => {
   console.log(`⚡: ${socket.id} user just connected!`);
   //let testObj = {test_a:"sabs",test_b:"elio"}
   socket.emit("JOIN_REQUEST_ACCEPTED","connect success")
 
-  //set up serial connection::: 
-  const parser = new ReadlineParser()
-  port.pipe(parser)
-  
-  parser.on('data', function(incoming)
-  {
-    console.log(incoming);
-  
-    if(incoming.trim()!== prev_s) {
-      console.log(incoming.trim())
-      if(incoming.trim() ==="ON"){
-     //send data to client
-      io.emit("GOT_FLUSH","ON");
-    }
-     prev_s =incoming.trim();
+  //outside of socket connection :) - for testing
+const parser = new ReadlineParser()
+port.pipe(parser)
+parser.on('data', function(incoming){
 
-    }
-  })
+    if(incoming.trim() ==="ON" && notIn===true){
+   //send data to client
+   console.log("hereee")
+    io.emit("GOT_FLUSH","ON");
+    notIn=false;
+  }
+ 
+
+  
+
+})
+
+ 
 
   socket.on('disconnect', () => {
     socket.disconnect()

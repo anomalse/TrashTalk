@@ -32,16 +32,18 @@ html, body {
     font-style: normal;
     font-weight: bold;
     font-size: 96px;
-    line-height: 1.8;
+    line-height: 1.4;
     font-family: Arial, sans-serif;
     font: 1200 96px Arial;
+    margin-top:24px;
+    margin-bottom:36px;
 }
 
 video {
     width: auto;
-    height: calc(100% - 40px);
+    height: calc(100% - 200px);
     border-radius: 40px;
-    margin-left: 6%;
+    margin-left: 10%;
     /* padding-top: 20px;
     padding-bottom: 20px; */
 /*  border: 10px solid #606dbc; */

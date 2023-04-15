@@ -13,7 +13,8 @@ async function newVideoHandler(e) {
   let opacity =1;
   let dir = -.01;
   function crossFade(){
-    //fadeout
+    document.getElementById("video-src").setAttribute("src",filePath);
+    // //fadeout
     if(dir === -.01 && opacity> 0){
       console.log(opacity);
     document.getElementById("test-video-mdes").style.opacity = opacity;
@@ -28,7 +29,7 @@ async function newVideoHandler(e) {
     }
     //other dir... fade in
     if(dir === .01 && opacity< 1){
-      document.getElementById("test-video-mdes").style.opacity = opacity;
+      document.getElementById("test-video-mdes").style.opacity = 1.0;
       opacity = opacity+dir;
       window.requestAnimationFrame(crossFade);
     }

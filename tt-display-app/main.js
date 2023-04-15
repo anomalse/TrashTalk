@@ -8,7 +8,7 @@ const { app, BrowserWindow,ipcMain } = electron
 
 
 
-let directoryPathN = os.homedir()+"/desktop/TrashTalk/tt_webServer/uploads/video";
+let directoryPathN = os.homedir()+"/desktop/TrashTalk/tt-webServer/uploads/video";
 const directoryPath = path.join(__dirname, 'videos');
 console.log(directoryPathN )
 
@@ -29,7 +29,8 @@ fs.readdir(directoryPathN, function (err, files) {
   let done =false;
   while(!done){
     let randomNum = Math.floor(Math.random()*files.length);
-    if(!files[randomNum].startsWith(".")){
+    if(!files[randomNum].startsWith(".") && !files[randomNum].startsWith("color_bars")){
+      console.log(`${directoryPathN}/${files[randomNum]}`)
     resolve (`${directoryPathN}/${files[randomNum]}`);
     done =true;
     }

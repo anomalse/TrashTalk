@@ -9,6 +9,7 @@ import { Camera } from 'expo-camera';
 export default function Splash(props) {
   //camera enabled var
   const [startCamera,setStartCamera] = useState(false); 
+ 
   //state in the narrative
   const [trash_talk_state, setTrashTalkState] = useState(0);
   
@@ -55,6 +56,12 @@ export default function Splash(props) {
      // do something
      console.log("granted and start detection")
      setCamPermission(true);
+
+    //  const codecs = await Camera.getAvailableVideoCodecsAsync();
+    //  //setAvilableCodecs(codecs);
+    //  console.log({ codecs });
+    //  props.setSelectedCodec(Camera.Constants.VideoCodec.JPEG)
+   
      //go to next state
      props.setTrashTalkState(1);
      
