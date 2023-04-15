@@ -8,7 +8,7 @@ const { app, BrowserWindow,ipcMain } = electron
 
 
 
-let directoryPathN = os.homedir()+"/weworkforus/MDES-REACT/faceTestServer/uploads/video";
+let directoryPathN = os.homedir()+"/desktop/TrashTalk/tt_webServer/uploads/video";
 const directoryPath = path.join(__dirname, 'videos');
 console.log(directoryPathN )
 
@@ -29,8 +29,6 @@ fs.readdir(directoryPathN, function (err, files) {
   let done =false;
   while(!done){
     let randomNum = Math.floor(Math.random()*files.length);
-   // console.log(randomNum)
-   // console.log(files[randomNum])
     if(!files[randomNum].startsWith(".")){
     resolve (`${directoryPathN}/${files[randomNum]}`);
     done =true;
@@ -42,10 +40,6 @@ fs.readdir(directoryPathN, function (err, files) {
 }
 
 const createWindow = (w,h) => {
-    // const win = new BrowserWindow({
-    //   width: 800,
-    //   height: 600
-    // })
 
     const win = new BrowserWindow({
         width: w,
@@ -60,8 +54,6 @@ const createWindow = (w,h) => {
   
     win.loadFile('index.html')
     win.maximize();
-    // const contents = win.webContents;
-    // console.log(contents)
   }
 
   app.whenReady().then(() => {
@@ -84,25 +76,8 @@ const createWindow = (w,h) => {
 
   }
 
-  //test message pass...
-//   ipcMain.on('set-title', (event, title) => {
-//     const webContents = event.sender
-//     const win = BrowserWindow.fromWebContents(webContents)
-//     win.setTitle(title)
-//   })
-
   ipcMain.on('set-video-message', (event, message) => {
     const webContents = event.sender
     const win = BrowserWindow.fromWebContents(webContents)
     win.setTitle(message)
   })
-
-//   let user = "Coded By Mansi Gupta"
-//   function changeInDom(user) {
-//     let code = `
-//     var p = document.getElementById("content_styler");
-//     p.innerHTML = "I am the changed text. "+"${user}";
-//     `;
-//     win.webContents.executeJavaScript(code);
-
-// }

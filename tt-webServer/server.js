@@ -1,7 +1,7 @@
 //serial
 const {SerialPort,ReadlineParser} = require('serialport');
 const Readline = require('@serialport/parser-readline');
-const path =  '/dev/cu.usbmodem14101';
+const path =  '/dev/cu.usbmodem14201';
 const baudRate = 9600;
 const port = new SerialPort({ path, baudRate })
 let prev_s = "";
@@ -26,19 +26,11 @@ app.get('/', (req, res) => {
   return res.status(200).send("It's working");
 });
 
-// //middle ware
-// app.use(
-//   fileUpload({
-//     useTempFiles: true,
-//     safeFileNames: true,
-//     preserveExtension: true,
-//     tempFileDir: `${__dirname}/public/files/temp`
-//   })
-// );
 
+// for receiving images from react app
 
 app.patch('/binary-upload', (req, res) => {
-  console.log('here')
+  console.log('got an upload')
     console.log(req)
   let s = req.pipe(fs.createWriteStream('./uploads/video/' + Date.now()+".mov"));
   s.on('finish', function () { console.log("done"); res.send({ status: 'uploaded' });});
@@ -46,29 +38,12 @@ app.patch('/binary-upload', (req, res) => {
  
 });
 
-// // //end point
-// app.post('/upload', (req, res, next) => {
-  
-//   let uploadFile = req.files.video;
-//   const name = uploadFile.name;
-//   console.log(uploadFile)
-//   //const md5 = uploadFile.md5();
-//   const saveAs = `${name}.mp4`;
-
-//     uploadFile.mv(`${__dirname}/uploads/video/${saveAs}`, function(err) {
-//     if (err) {
-//       return res.status(500).send(err);
-//     }
-//     return res.status(200).json({ status: 'uploaded', name, saveAs });
-//   });
-// });
-
 // make server listen for incoming messages
 httpServer.listen(PORT, function () {
   console.log('listening on port:: ' + PORT);
 })
 
-//👇🏻 Add this before the app.get() block
+//socket connection
 io.on('connect', (socket) => {
   console.log(`⚡: ${socket.id} user just connected!`);
   //let testObj = {test_a:"sabs",test_b:"elio"}
@@ -83,13 +58,9 @@ io.on('connect', (socket) => {
     console.log(incoming);
   
     if(incoming.trim()!== prev_s) {
-      console.log("once");
       console.log(incoming.trim())
-    
-
       if(incoming.trim() ==="ON"){
-    //   //send data to client
-      //console.log("herer");
+     //send data to client
       io.emit("GOT_FLUSH","ON");
     }
      prev_s =incoming.trim();
@@ -102,18 +73,3 @@ io.on('connect', (socket) => {
     console.log('🔥: A user disconnected');
   });
 });
-  //return res.status(200).json({ status: 'test123'})
-//})
-// console.log(uploadFile)
-//   const name = uploadFile.name;
-//   //const md5 = uploadFile.md5();
-//   const saveAs = `${name}.mp4`;
-
-  
-//   uploadFile.mv(`${__dirname}/uploads/video/${saveAs}`, function(err) {
-//     if (err) {
-//       return res.status(500).send(err);
-//     }
-//     return res.status(200).json({ status: 'uploaded', name, saveAs });
-//   });
-//});
