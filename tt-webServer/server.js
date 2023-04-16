@@ -1,11 +1,17 @@
 //serial
+let arguments = process.argv;
+//console.log(arguments[2])
+const path = arguments[2];
+
 const {SerialPort,ReadlineParser} = require('serialport');
 const Readline = require('@serialport/parser-readline');
-const path =  '/dev/cu.usbmodem14101';
+//const path =  '/dev/cu.usbmodem14101';
 const baudRate = 9600;
 const port = new SerialPort({ path, baudRate })
 //let prev_s = "";
 let notIn=true;
+
+
 
 //socket server
 const PORT = 5000;
