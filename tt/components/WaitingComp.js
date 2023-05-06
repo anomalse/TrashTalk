@@ -6,7 +6,10 @@ import {SocketContext} from '../context/socket';
 const WaitingComp = (props) => {
 
     const [flushDetected, setFlushDetected] = useState(0);
-    const socket = useContext(SocketContext);
+   // const socket = useContext(SocketContext);
+
+   const vals = useContext(SocketContext);
+   const socket = vals[0];
 
     const handleFlush = useCallback(() => {
         console.log("have a flush");

@@ -1,12 +1,21 @@
 import * as React from 'react';
-import {View, Text} from 'react-native';
+import {View, Text,TextInput,Button} from 'react-native';
 import{ useState, useContext, useCallback, useEffect} from 'react';
-import {SocketContext} from '../context/socket';
+import {SocketContext} from '../context/socket.js';
+
+
 import { Camera } from 'expo-camera';
 
 
 
 export default function Splash(props) {
+
+  const vals = useContext(SocketContext);
+  const socket = vals[0];
+  const setSocketIP = vals[1]
+
+  //for ipAddress
+  const [ipAddress, setIPAddress] = useState('');
   //camera enabled var
   const [startCamera,setStartCamera] = useState(false); 
  
@@ -16,8 +25,6 @@ export default function Splash(props) {
   //socket request
   const [connected, setConnected] = useState(false);
 
-  const socket = useContext(SocketContext);
-
   const handleInviteAccepted = useCallback(() => {
     console.log("success");
     setConnected(true);
@@ -26,8 +33,10 @@ export default function Splash(props) {
   }, []);
 
   useEffect(() => {
-    // as soon as the component is mounted, do the following tasks:
-
+if(socket!==null){
+  console.log("are we here?")
+   // as soon as the component is mounted, do the following tasks:
+    
     // subscribe to socket events
     socket.on("JOIN_REQUEST_ACCEPTED", handleInviteAccepted); 
 
@@ -35,7 +44,11 @@ export default function Splash(props) {
       // before the component is destroyed
       // unbind all event handlers used in this component
       socket.off("JOIN_REQUEST_ACCEPTED", handleInviteAccepted);
-    };
+   };
+
+}
+    
+   
   }, [socket, handleInviteAccepted]);
 
 
@@ -74,12 +87,29 @@ export default function Splash(props) {
   }
 
 
-  let screen_instruction = "ALTAR OF\nCOMMUNITAS\n WAITING FOR SERVER CONNECTION "
+  let screen_instruction = "ALTAR OF\nCOMMUNITAS\n WAITING FOR SERVER CONNECTION ";
+  let input_instruction = "SERVER IP ADDRESS: ";
+
+  const submitIP  = ()=>{
+    
+   console.log("submitted")
+   setSocketIP(ipAddress);
+  }
+
+
   return (
    
       <View style = {props.styles.splashContainer}> 
       <Text style = {props.styles.titleSplash}></Text>
       <Text style = {props.styles.titleSplash}> {screen_instruction}</Text>
+      <Text style = {props.styles.serverInput}> {input_instruction}</Text>
+      <TextInput
+          value={ipAddress}
+          onChangeText={(ipAddress) => setIPAddress(ipAddress)}
+          placeholder={''}
+          style={props.styles.input}
+          onSubmitEditing={submitIP}
+        />
    </View>
     
 

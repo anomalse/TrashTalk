@@ -1,18 +1,19 @@
 import * as React from 'react';
 import {View,StyleSheet,ImageBackground} from 'react-native';
-import{ useState} from 'react';
+import{ useContext,useState} from 'react';
 
 import Splash from './components/Splash.js'
 import WaitingComp from './components/WaitingComp.js'
 import FaceComp from './components/FaceComp.js';
 import RecordComp from './components/RecordComp.js';
 
-import {SocketContext, socket} from './context/socket';
+import {SocketContext,SocketContextProvider} from './context/socket.js';
 
 export default function App() {
   //state in the narrative
   const [trash_talk_state, setTrashTalkState] = useState(0);
   const [selectedCodec,setSelectedCodec] = useState(""); 
+  const socket = useContext(SocketContext);
 
  // to go to the next step ...
   // const setNextTrashTalkState = (value) =>{
@@ -25,7 +26,7 @@ export default function App() {
     <View style={styles.container}>
        <ImageBackground style={styles.background}
     source={require('./images/bg/pink_2x.png')}>
-        <SocketContext.Provider value={socket}>
+        <SocketContextProvider>
        {trash_talk_state === 0 ? (
      <Splash styles = {styles} setTrashTalkState = {setTrashTalkState}/>
       ):trash_talk_state === 1 ? (
@@ -35,7 +36,7 @@ export default function App() {
          ): trash_talk_state === 3 ? (
             <RecordComp styles = {styles} setTrashTalkState = {setTrashTalkState}/>
         ): (<></>)}
-        </SocketContext.Provider>
+        </SocketContextProvider>
         </ImageBackground>
     </View>
     
@@ -119,6 +120,27 @@ const styles = StyleSheet.create({
     width:"100%",
     opacity:0
   },
+    input: {
+      fontSize: 32,
+      fontWeight: "bold",
+    // width: 250,
+    width:"92%",
+    //  height: 44,
+    //marginLeft:24,
+    marginBottom:36,
+    marginTop:12,
+    backgroundColor: 'rgba(255,0,239,1)',
+    color:"#ffffff",
+    padding:28
+  },
+  serverInput:{
+    fontSize: 28,
+    fontWeight: "bold",
+    paddingTop:24,
+    color:'rgba(255,0,239,1)',
+   
+  },
+
   // container: {
   //   flex: 1,
   //   backgroundColor: '#fff',

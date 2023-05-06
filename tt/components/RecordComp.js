@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { Text, View} from 'react-native';
-import{useEffect,useState} from 'react';
+import{useEffect,useState,useContext} from 'react';
 import { CameraType } from 'expo-camera';
 import { Camera } from 'expo-camera';
 import * as FileSystem from 'expo-file-system';
+import {SocketContext} from '../context/socket';
 const RecordComp = (props) => {
 
 
@@ -20,6 +21,9 @@ const RecordComp = (props) => {
     stateRef.camera = cameraRef;
 
     let title_screen = "ALTAR OF\nCOMMUNITAS\n";
+
+    const vals = useContext(SocketContext);
+    const addressOfServer = vals[2];
     
 
     useEffect(() => {
@@ -60,7 +64,7 @@ const RecordComp = (props) => {
 
             const codecs = await Camera.getAvailableVideoCodecsAsync();
           //setAvilableCodecs(codecs);
-          console.log({ codecs });
+          //console.log({ codecs });
          
          // "mp4"
        
@@ -91,7 +95,7 @@ const RecordComp = (props) => {
             try {
               //http://cslab-mbp-two.local:5000
               //http://10.115.137.175:5000/binary-upload
-                const response = await FileSystem.uploadAsync(`http://cslab-mbp-two.local:5000/binary-upload`, fileURI, {
+                const response = await FileSystem.uploadAsync(`${addressOfServer}/binary-upload`, fileURI, {
                   fieldName: 'file',
                   httpMethod: 'PATCH',
                   uploadType: FileSystem.FileSystemUploadType.BINARY_CONTENT,
